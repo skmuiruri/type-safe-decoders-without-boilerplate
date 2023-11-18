@@ -7,6 +7,18 @@ import scala.collection.immutable.ListMap
 import scala.util.Try
 
 final class QueryParamsParser(map: Map[String, Chunk[String]]) {
+  def decode[A](implicit schema: Schema[A]): Either[String, A] =
+    (schema.asInstanceOf[Schema[_]] match {
+      case enum: Schema.Enum[_]                                  => Left("Enum not supported")
+      case collection: Schema.Collection[_, _]                   => Left("Collection not supported")
+      case Schema.Optional(schema, annotations)                  => Right(decode(schema).toOption)
+      case Schema.Lazy(schema0)                                  => decode(schema0())
+      case record: Schema.Record[_]                              => decodeRecord(record)
+      case Schema.Transform(schema, f, g, annotations, identity) => decode(schema).flatMap(f.asInstanceOf[Any => Either[String, Any]])
+      case Schema.Primitive(standardType, annotations)           => Left("Primitive not supported")
+      case Schema.Dynamic(annotations)                           => decodeDynamicValue
+      case _                                                     => Left("This schema cannot be decoded from query params") // add schema info to erro message
+    }).map(_.asInstanceOf[A])
 
   private def collect[E, A](value: Chunk[Either[E, A]]): Either[E, Chunk[A]] =
     value.foldLeft[Either[E, Chunk[A]]](Right(Chunk.empty)) {
@@ -18,38 +30,28 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
         }
     }
 
-  def decode[A](implicit schema: Schema[A]): Either[String, A] =
-    (schema.asInstanceOf[Schema[_]] match {
-      case enum: Schema.Enum[_]                 => Left("Enum not supported")
-      case collection: Schema.Collection[_, _]  => Left("Collection not supported")
-      case Schema.Optional(schema, annotations) => Right(decode(schema).toOption)
-      case Schema.Lazy(schema0)                 => decode(schema0())
-      case record: Schema.Record[_]             =>
-        val fieldValues: Chunk[Either[String, Any]] = record.fields.map { field =>
-          val fieldValue = map.get(field.name)
-          fieldValue match {
-            case Some(queryParamValues) => decodeFieldValue(queryParamValues, field, field.schema)
-            case None                   => Left(s"Expected a value for field ${field.name}")
-          }
-        }
-        for {
-          value <- collect(fieldValues)
-        } yield record.construct(value)(Unsafe.unsafe[A])
+  private def decodeRecord[A](record: Schema.Record[_]): Either[String, Either[String, _]] = {
+    val fieldValues: Chunk[Either[String, Any]] = record.fields.map { field =>
+      val fieldValue = map.get(field.name)
+      fieldValue match {
+        case Some(queryParamValues) => decodeFieldValue(queryParamValues, field, field.schema)
+        case None                   => Left(s"Expected a value for field ${field.name}")
+      }
+    }
+    for {
+      value <- collect(fieldValues)
+    } yield record.construct(value)(Unsafe.unsafe[A])
+  }
 
-      case Schema.Transform(schema, f, g, annotations, identity) =>
-        decode(schema).flatMap(f.asInstanceOf[Any => Either[String, Any]])
-      case Schema.Primitive(standardType, annotations)           => Left("Primitive not supported")
-      case Schema.Dynamic(annotations)                           =>
-        Right(
-          DynamicValue.Record(
-            TypeId.Structural,
-            ListMap(map.map { case (paramName, values) =>
-              (paramName, DynamicValue.Primitive(values.headOption.getOrElse(""), StandardType.StringType))
-            }.toSeq: _*)
-          )
-        )
-      case _                                                     => Left("This schema cannot be decoded from query params") // add schema info to erro message
-    }).map(_.asInstanceOf[A])
+  private def decodeDynamicValue: Right[Nothing, DynamicValue.Record] =
+    Right(
+      DynamicValue.Record(
+        TypeId.Structural,
+        ListMap(map.map { case (paramName, values) =>
+          (paramName, DynamicValue.Primitive(values.headOption.getOrElse(""), StandardType.StringType))
+        }.toSeq: _*)
+      )
+    )
 
   private def toX[R](fieldName: String, expectedType: String, queryParamValue: String)(
     f: String => Option[R]
@@ -59,20 +61,20 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
       .getOrElse(Left(s"Expected a $expectedType but found $queryParamValue for field $fieldName"))
 
   private def managePrimitiveType(
-    queryParamValues: Chunk[String],
+    params: Chunk[String],
     field: Schema.Field[_, _],
     standardType: StandardType[Any]
   ): Either[String, _] =
-    if (queryParamValues.isEmpty)
+    if (params.isEmpty)
       Left(s"Expected a String but no query parameter value found for ${field.name}")
-    else if (queryParamValues.size > 1)
+    else if (params.size > 1)
       Left(s"Expected a String but found multiple values for ${field.name}")
     else {
-      val queryParamValue = queryParamValues(0)
+      val queryParamValue = params(0)
 
       standardType match {
         case StandardType.UnitType           => Right(())
-        case StandardType.StringType         => Right(queryParamValues(0))
+        case StandardType.StringType         => Right(params(0))
         case StandardType.BoolType           =>
           toX(field.name, StandardType.BoolType.tag, queryParamValue)(_.toBooleanOption)
         case StandardType.ByteType           =>
@@ -88,7 +90,7 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
         case StandardType.DoubleType         =>
           toX(field.name, StandardType.DoubleType.tag, queryParamValue)(_.toDoubleOption)
         case StandardType.BinaryType         => Left("Binary Not Supported") // impose regulation and document it
-        case StandardType.CharType           => Right(queryParamValues(0).head)
+        case StandardType.CharType           => Right(params(0).head)
         case StandardType.UUIDType           =>
           toX(field.name, StandardType.UUIDType.tag, queryParamValue)(v => Try(java.util.UUID.fromString(v)).toOption)
         case StandardType.BigDecimalType     =>
@@ -154,38 +156,42 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
       }
     }
 
-  def decodeFieldValue(
-    queryParamValues: Chunk[String],
-    field: Schema.Field[_, _],
-    schema: Schema[_]
-  ): Either[String, _] =
+  def decodeFieldValue(params: Chunk[String], field: Schema.Field[_, _], schema: Schema[_]): Either[String, _] =
     schema match {
       case collection: Schema.Collection[_, _]                   =>
         collection match {
           case Schema.Sequence(elementSchema, fromChunk, toChunk, annotations, identity) =>
-            collect(queryParamValues.map(v => decodeFieldValue(Chunk(v), field, elementSchema))).map(fromChunk)
+            params.map(v => decodeFieldValue(Chunk(v), field, elementSchema)).foldLeft[Either[String, Chunk[Any]]](Right(Chunk.empty)) {
+            case (Left(e), either) => Left(e)
+            case (Right(chunk), either) =>
+              either match {
+                case Left(value) => Left(value)
+                case Right(value) => Right(chunk :+ value)
+              }
+          }.map(fromChunk)
           case Schema.Map(keySchema, valueSchema, annotations)                           => Left("Map not supported")
           case Schema.Set(elementSchema, annotations)                                    =>
-            collect(queryParamValues.map(v => decodeFieldValue(Chunk(v), field, elementSchema)))
+            collect(params.map(v => decodeFieldValue(Chunk(v), field, elementSchema)))
               .map(Chunk.fromIterable(_).toSet)
         }
       case Schema.Transform(schema, f, g, annotations, identity) =>
-        decodeFieldValue(queryParamValues, field, schema).flatMap(f.asInstanceOf[Any => Either[String, Any]])
-      case Schema.Primitive(standardType, annotations)           => managePrimitiveType(queryParamValues, field, standardType)
-      case Schema.Optional(schema, annotations)                  => Right(decodeFieldValue(queryParamValues, field, schema).toOption)
+        decodeFieldValue(params, field, schema).flatMap(f.asInstanceOf[Any => Either[String, Any]])
+      case Schema.Primitive(standardType, annotations)           =>
+        managePrimitiveType(params, field, standardType.asInstanceOf[StandardType[Any]])
+      case Schema.Optional(schema, annotations)                  => Right(decodeFieldValue(params, field, schema).toOption)
       case Schema.Tuple2(left, right, annotations)               =>
-        if (queryParamValues.size == 2) {
-          val leftValue  = decodeFieldValue(Chunk(queryParamValues(0)), field, left)
-          val rightValue = decodeFieldValue(Chunk(queryParamValues(1)), field, right)
+        if (params.size == 2) {
+          val leftValue  = decodeFieldValue(Chunk(params(0)), field, left)
+          val rightValue = decodeFieldValue(Chunk(params(1)), field, right)
           for {
             left  <- leftValue
             right <- rightValue
           } yield (left, right)
-        } else Left(s"Expected a Tuple2 but found ${queryParamValues.size} values for ${field.name}")
+        } else Left(s"Expected a Tuple2 but found ${params.size} values for ${field.name}")
 
-      case Schema.Lazy(schema0)        => decodeFieldValue(queryParamValues, field, schema0())
+      case Schema.Lazy(schema0)        => decodeFieldValue(params, field, schema0())
       case Schema.Dynamic(annotations) =>
-        Right(DynamicValue.Sequence(queryParamValues.map(DynamicValue.Primitive(_, StandardType.StringType))))
+        Right(DynamicValue.Sequence(params.map(DynamicValue.Primitive(_, StandardType.StringType))))
       case _                           => Left("This schema cannot be decoded from query params") // add schema info to erro message
     }
 }
