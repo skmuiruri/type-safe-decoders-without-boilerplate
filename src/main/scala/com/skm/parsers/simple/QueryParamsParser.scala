@@ -4,28 +4,55 @@ import zio.schema._
 import zio.{ Chunk, ZIO, ZLayer }
 
 import scala.collection.immutable.ListMap
+import scala.util.Try
 
-final class QueryParamsParser private (queryParams: Map[String, String]) {
+final class QueryParamsParser private (queryParams: Map[String, List[String]]) {
 
-  def decode[A](implicit schema: Schema[A]): Either[String, A] = {
-    val record = DynamicValue.Record(
-      TypeId.Structural,
-      ListMap(queryParams.map { case (paramName, values) =>
-        (paramName, DynamicValue.Primitive(values.headOption.getOrElse(""), StandardType.StringType))
-      }.toSeq: _*)
-    )
-    schema.fromDynamic(record)
+  def toDV(params: Map[String, List[String]]): Set[DynamicValue]          = {
+    import DynamicValue._
+    params
+      .foldLeft[Set[ListMap[String, DynamicValue]]](Set(ListMap())) { case (set, (key, values)) =>
+        set.flatMap { acc =>
+          values match {
+            case Nil      =>
+              Set(acc.updated(key, Singleton(())))
+            case x :: Nil =>
+              val strInterpretation =
+                Set(acc.updated(key, Primitive[String](x, StandardType.StringType)))
+              val intInterpretation = Try(x.toInt).toOption match {
+                case Some(value) =>
+                  Set(acc.updated(key, Primitive[Int](value, StandardType.IntType)))
+                case None        => Set()
+              }
+              strInterpretation ++ intInterpretation
+            case xs       =>
+              Set(
+                acc.updated(
+                  key,
+                  DynamicValue.Sequence(
+                    Chunk.fromIterable(xs).map(Primitive[String](_, StandardType.StringType))
+                  )
+                )
+              )
+          }
+        }
+      }
+      .map(v => DynamicValue.Record(TypeId.Structural, v))
   }
+  def decode[A](implicit schema: Schema[A]): scala.util.Either[String, A] =
+    toDV(queryParams)
+      .map(_.toTypedValue(schema))
+      .collectFirst { case Right(v) => v }
+      .toRight("some error")
 }
 
 object QueryParamsParser {
-
-  case class Person(name: String, surname: String, age: Int)
-  object Person {
-    implicit val schema: Schema[Person] = DeriveSchema.gen[Person]
+  case class Book(title: String, authors: List[String])
+  object Book {
+    implicit val schema: Schema[Book] = DeriveSchema.gen[Book]
   }
 
-  def make(queryParams: Map[String, String]): ZLayer[Any, Nothing, QueryParamsParser] =
+  def make(queryParams: Map[String, List[String]]): ZLayer[Any, Nothing, QueryParamsParser] =
     ZLayer(ZIO.succeed(new QueryParamsParser(queryParams)))
 
   def decode[A](implicit schema: Schema[A]): ZIO[QueryParamsParser, Nothing, Either[String, A]] =
@@ -43,5 +70,6 @@ query=programming: Simple key-value pair for the search query.
 filter=category:computing and filter=author:john_doe: Complex parameters indicating filters. Each filter consists of a key-value pair, where the key represents the filter type (category, author) and the value is the specific criterion (computing, john_doe).
 sort=publication_date:desc: Sorting parameter where publication_date is the field to sort by, and desc indicates descending order.
 pagination=page:2&pageSize:10: Pagination parameters specifying that the user wants to see the second page with a page size of 10.
+
 
  */
