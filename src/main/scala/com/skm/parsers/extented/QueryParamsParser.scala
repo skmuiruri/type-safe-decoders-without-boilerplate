@@ -20,8 +20,8 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
 
   def decode[A](implicit schema: Schema[A]): Either[String, A] =
     (schema.asInstanceOf[Schema[_]] match {
-      case enum: Schema.Enum[_]     => Left("Enum not supported")
-      case collection: Schema.Collection[_, _]                   => Left("Collection not supported")
+      case enum: Schema.Enum[_]                 => Left("Enum not supported")
+      case collection: Schema.Collection[_, _]  => Left("Collection not supported")
       case Schema.Optional(schema, annotations) => Right(decode(schema).toOption)
       case Schema.Lazy(schema0)                 => decode(schema0())
       case record: Schema.Record[_]             =>
@@ -38,7 +38,7 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
 
       case Schema.Transform(schema, f, g, annotations, identity) =>
         decode(schema).flatMap(f.asInstanceOf[Any => Either[String, Any]])
-            case Schema.Primitive(standardType, annotations) => Left("Primitive not supported")
+      case Schema.Primitive(standardType, annotations)           => Left("Primitive not supported")
       case Schema.Dynamic(annotations)                           =>
         Right(
           DynamicValue.Record(
@@ -58,7 +58,11 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
       .map(Right(_))
       .getOrElse(Left(s"Expected a $expectedType but found $queryParamValue for field $fieldName"))
 
-  private def managePrimitiveType(queryParamValues: Chunk[String], field: Schema.Field[_, _], standardType: StandardType[Any]):Either[String, _] =
+  private def managePrimitiveType(
+    queryParamValues: Chunk[String],
+    field: Schema.Field[_, _],
+    standardType: StandardType[Any]
+  ): Either[String, _] =
     if (queryParamValues.isEmpty)
       Left(s"Expected a String but no query parameter value found for ${field.name}")
     else if (queryParamValues.size > 1)
@@ -150,15 +154,20 @@ final class QueryParamsParser(map: Map[String, Chunk[String]]) {
       }
     }
 
-  def decodeFieldValue(queryParamValues: Chunk[String], field: Schema.Field[_, _], schema: Schema[_]): Either[String, _] =
+  def decodeFieldValue(
+    queryParamValues: Chunk[String],
+    field: Schema.Field[_, _],
+    schema: Schema[_]
+  ): Either[String, _] =
     schema match {
-      case collection: Schema.Collection[_, _] =>
+      case collection: Schema.Collection[_, _]                   =>
         collection match {
           case Schema.Sequence(elementSchema, fromChunk, toChunk, annotations, identity) =>
-           collect(queryParamValues.map(v => decodeFieldValue(Chunk(v), field, elementSchema))).map(fromChunk)
+            collect(queryParamValues.map(v => decodeFieldValue(Chunk(v), field, elementSchema))).map(fromChunk)
           case Schema.Map(keySchema, valueSchema, annotations)                           => Left("Map not supported")
           case Schema.Set(elementSchema, annotations)                                    =>
-            collect(queryParamValues.map(v => decodeFieldValue(Chunk(v), field, elementSchema))).map(Chunk.fromIterable(_).toSet)
+            collect(queryParamValues.map(v => decodeFieldValue(Chunk(v), field, elementSchema)))
+              .map(Chunk.fromIterable(_).toSet)
         }
       case Schema.Transform(schema, f, g, annotations, identity) =>
         decodeFieldValue(queryParamValues, field, schema).flatMap(f.asInstanceOf[Any => Either[String, Any]])
