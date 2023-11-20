@@ -1,4 +1,4 @@
-package com.skm.parsers.simple
+package com.skm.parsers.usingdynamicvalue
 
 import zio.schema._
 import zio.{ Chunk, ZIO, ZLayer }
@@ -8,7 +8,7 @@ import scala.util.Try
 
 final class QueryParamsParser private (queryParams: Map[String, List[String]]) {
 
-  def toDV(params: Map[String, List[String]]): Set[DynamicValue]          = {
+  def toDynamicValue(params: Map[String, List[String]]): Set[DynamicValue]          = {
     import DynamicValue._
     params
       .foldLeft[Set[ListMap[String, DynamicValue]]](Set(ListMap())) { case (set, (key, values)) =>
@@ -40,10 +40,10 @@ final class QueryParamsParser private (queryParams: Map[String, List[String]]) {
       .map(v => DynamicValue.Record(TypeId.Structural, v))
   }
   def decode[A](implicit schema: Schema[A]): scala.util.Either[String, A] =
-    toDV(queryParams)
+    toDynamicValue(queryParams)
       .map(_.toTypedValue(schema))
       .collectFirst { case Right(v) => v }
-      .toRight("some error")
+      .toRight("error decoding the provided values")
 }
 
 object QueryParamsParser {

@@ -1,6 +1,6 @@
 package com.skm.parsers
 
-import com.skm.parsers.simple.QueryParamsParser._
+import com.skm.parsers.usingdynamicvalue.QueryParamsParser._
 import zio.{ Chunk, ZIOAppDefault }
 
 object Main extends ZIOAppDefault {
@@ -25,8 +25,8 @@ object Main extends ZIOAppDefault {
     }
 
   def run =
-    simple.QueryParamsParser
+    usingdynamicvalue.QueryParamsParser
       .decode[Book]
       .debug("results: ")
-      .provide(simple.QueryParamsParser.make(params))
+      .provide(usingdynamicvalue.QueryParamsParser.make(params))
 }

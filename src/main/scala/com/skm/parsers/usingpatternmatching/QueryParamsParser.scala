@@ -1,4 +1,4 @@
-package com.skm.parsers.extented
+package com.skm.parsers.usingpatternmatching
 
 import zio.schema.{ DynamicValue, Schema, StandardType, TypeId }
 import zio.{ Chunk, Unsafe }
