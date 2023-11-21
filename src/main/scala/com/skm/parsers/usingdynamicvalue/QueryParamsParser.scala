@@ -7,8 +7,13 @@ import scala.collection.immutable.ListMap
 import scala.util.Try
 
 final class QueryParamsParser private (queryParams: Map[String, List[String]]) {
+  def decode[A](implicit schema: Schema[A]): scala.util.Either[String, A] =
+    toDynamicValue(queryParams)
+      .map(_.toTypedValue(schema))
+      .collectFirst { case Right(v) => v }
+      .toRight("error decoding the provided values")
 
-  def toDynamicValue(params: Map[String, List[String]]): Set[DynamicValue]          = {
+  private def toDynamicValue(params: Map[String, List[String]]): Set[DynamicValue]          = {
     import DynamicValue._
     params
       .foldLeft[Set[ListMap[String, DynamicValue]]](Set(ListMap())) { case (set, (key, values)) =>
@@ -39,11 +44,6 @@ final class QueryParamsParser private (queryParams: Map[String, List[String]]) {
       }
       .map(v => DynamicValue.Record(TypeId.Structural, v))
   }
-  def decode[A](implicit schema: Schema[A]): scala.util.Either[String, A] =
-    toDynamicValue(queryParams)
-      .map(_.toTypedValue(schema))
-      .collectFirst { case Right(v) => v }
-      .toRight("error decoding the provided values")
 }
 
 object QueryParamsParser {
