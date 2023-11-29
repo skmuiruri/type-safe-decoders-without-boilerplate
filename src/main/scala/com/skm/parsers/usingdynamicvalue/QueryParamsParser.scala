@@ -1,22 +1,22 @@
 package com.skm.parsers.usingdynamicvalue
 
+import zio.schema.DynamicValue._
 import zio.schema._
 import zio.{ Chunk, ZIO, ZLayer }
 
 import scala.collection.immutable.ListMap
 import scala.util.Try
 
-final class QueryParamsParser private (queryParams: Map[String, List[String]]) {
+final class QueryParamsParser private (params: Map[String, List[String]]) {
   def decode[A](implicit schema: Schema[A]): scala.util.Either[String, A] =
-    toDynamicValue(queryParams)
+    toDynamicValue(params)
       .map(_.toTypedValue(schema))
       .collectFirst { case Right(v) => v }
       .toRight("error decoding the provided values")
 
-  private def toDynamicValue(params: Map[String, List[String]]): Set[DynamicValue]          = {
-    import DynamicValue._
-    params
-      .foldLeft[Set[ListMap[String, DynamicValue]]](Set(ListMap())) { case (set, (key, values)) =>
+  private def toDynamicValue(params: Map[String, List[String]]): Set[DynamicValue] =
+    params.foldLeft[Set[ListMap[String, DynamicValue]]](Set(ListMap())) {
+      case (set, (key, values)) =>
         set.flatMap { acc =>
           values match {
             case Nil      =>
@@ -43,15 +43,9 @@ final class QueryParamsParser private (queryParams: Map[String, List[String]]) {
         }
       }
       .map(v => DynamicValue.Record(TypeId.Structural, v))
-  }
 }
 
 object QueryParamsParser {
-  case class Book(title: String, authors: List[String])
-  object Book {
-    implicit val schema: Schema[Book] = DeriveSchema.gen[Book]
-  }
-
   def make(queryParams: Map[String, List[String]]): ZLayer[Any, Nothing, QueryParamsParser] =
     ZLayer(ZIO.succeed(new QueryParamsParser(queryParams)))
 
