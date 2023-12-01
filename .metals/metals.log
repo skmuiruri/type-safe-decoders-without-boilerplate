@@ -551,3 +551,5 @@ Dec 01, 2023 10:01:11 AM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancella
 WARNING: Unmatched cancel notification for request id 1649
 2023.12.01 10:01:24 INFO  compiling root-test (1 scala source)
 2023.12.01 10:01:25 INFO  time: compiled root-test in 1.12s
+Dec 01, 2023 12:14:45 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1720
