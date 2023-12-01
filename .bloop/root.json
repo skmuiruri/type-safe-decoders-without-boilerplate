@@ -1,0 +1,540 @@
+{
+    "version": "1.4.0",
+    "project": {
+        "name": "root",
+        "directory": "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate",
+        "workspaceDir": "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate",
+        "sources": [
+            "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/src/main/scala",
+            "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/src/main/scala-2.13",
+            "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/src/main/scala-2",
+            "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/src/main/java",
+            "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/target/scala-2.13/src_managed/main"
+        ],
+        "dependencies": [
+            
+        ],
+        "classpath": [
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.10/scala-library-2.13.10.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio_2.13/2.0.13/zio_2.13-2.0.13.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema_2.13/0.4.14/zio-schema_2.13-0.4.14.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-bson_2.13/0.4.14/zio-schema-bson_2.13-0.4.14.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-json_2.13/0.4.14/zio-schema-json_2.13-0.4.14.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-protobuf_2.13/0.4.14/zio-schema-protobuf_2.13-0.4.14.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-optics_2.13/0.4.14/zio-schema-optics_2.13-0.4.14.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-derivation_2.13/0.4.14/zio-schema-derivation_2.13-0.4.14.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.10/scala-reflect-2.13.10.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-internal-macros_2.13/2.0.13/zio-internal-macros_2.13-2.0.13.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-stacktracer_2.13/2.0.13/zio-stacktracer_2.13-2.0.13.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/izumi-reflect_2.13/2.3.1/izumi-reflect_2.13-2.3.1.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-macros_2.13/0.4.14/zio-schema-macros_2.13-0.4.14.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-streams_2.13/2.0.10/zio-streams_2.13-2.0.10.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-prelude_2.13/1.0.0-RC18/zio-prelude_2.13-1.0.0-RC18.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-constraintless_2.13/0.3.2/zio-constraintless_2.13-0.3.2.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/mongodb/bson/4.9.1/bson-4.9.1.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-bson_2.13/1.0.2/zio-bson_2.13-1.0.2.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-json_2.13/0.5.0/zio-json_2.13-0.5.0.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-optics_2.13/0.2.1/zio-optics_2.13-0.2.1.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/izumi-reflect-thirdparty-boopickle-shaded_2.13/2.3.1/izumi-reflect-thirdparty-boopickle-shaded_2.13-2.3.1.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-prelude-macros_2.13/1.0.0-RC18/zio-prelude-macros_2.13-1.0.0-RC18.jar",
+            "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/softwaremill/magnolia1_2/magnolia_2.13/1.1.3/magnolia_2.13-1.1.3.jar"
+        ],
+        "out": "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/.bloop/root",
+        "classesDir": "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/.bloop/root/scala-2.13/classes",
+        "resources": [
+            "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/src/main/resources",
+            "/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate/target/scala-2.13/resource_managed/main"
+        ],
+        "scala": {
+            "organization": "org.scala-lang",
+            "name": "scala-compiler",
+            "version": "2.13.10",
+            "options": [
+                "-Xplugin:/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/olegpy/better-monadic-for_2.13/0.3.1/better-monadic-for_2.13-0.3.1.jar"
+            ],
+            "jars": [
+                "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.10/scala-library-2.13.10.jar",
+                "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.10/scala-compiler-2.13.10.jar",
+                "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.10/scala-reflect-2.13.10.jar",
+                "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12/java-diff-utils-4.12.jar",
+                "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/jline/jline/3.21.0/jline-3.21.0.jar",
+                "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.9.0/jna-5.9.0.jar"
+            ],
+            "setup": {
+                "order": "mixed",
+                "addLibraryToBootClasspath": true,
+                "addCompilerToClasspath": false,
+                "addExtraJarsToClasspath": false,
+                "manageBootClasspath": true,
+                "filterLibraryFromClasspath": true
+            }
+        },
+        "java": {
+            "options": [
+                
+            ]
+        },
+        "test": {
+            "frameworks": [
+                {
+                    "names": [
+                        "zio.test.sbt.ZTestFramework"
+                    ]
+                }
+            ],
+            "options": {
+                "excludes": [
+                    
+                ],
+                "arguments": [
+                    
+                ]
+            }
+        },
+        "platform": {
+            "name": "jvm",
+            "config": {
+                "home": "/Users/muiruri/.sdkman/candidates/java/11.0.19-tem",
+                "options": [
+                    "-Duser.dir=/Users/muiruri/Workspace/Scala/Talks/FS2023/type-safe-decoders-without-boilerplate"
+                ]
+            },
+            "mainClass": [
+                
+            ]
+        },
+        "resolution": {
+            "modules": [
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.10",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.10/scala-library-2.13.10.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.10/scala-library-2.13.10-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio_2.13",
+                    "version": "2.0.13",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio_2.13/2.0.13/zio_2.13-2.0.13.jar"
+                        },
+                        {
+                            "name": "zio_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio_2.13/2.0.13/zio_2.13-2.0.13-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-schema_2.13",
+                    "version": "0.4.14",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-schema_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema_2.13/0.4.14/zio-schema_2.13-0.4.14.jar"
+                        },
+                        {
+                            "name": "zio-schema_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema_2.13/0.4.14/zio-schema_2.13-0.4.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-schema-bson_2.13",
+                    "version": "0.4.14",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-schema-bson_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-bson_2.13/0.4.14/zio-schema-bson_2.13-0.4.14.jar"
+                        },
+                        {
+                            "name": "zio-schema-bson_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-bson_2.13/0.4.14/zio-schema-bson_2.13-0.4.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-schema-json_2.13",
+                    "version": "0.4.14",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-schema-json_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-json_2.13/0.4.14/zio-schema-json_2.13-0.4.14.jar"
+                        },
+                        {
+                            "name": "zio-schema-json_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-json_2.13/0.4.14/zio-schema-json_2.13-0.4.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-schema-protobuf_2.13",
+                    "version": "0.4.14",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-schema-protobuf_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-protobuf_2.13/0.4.14/zio-schema-protobuf_2.13-0.4.14.jar"
+                        },
+                        {
+                            "name": "zio-schema-protobuf_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-protobuf_2.13/0.4.14/zio-schema-protobuf_2.13-0.4.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-schema-optics_2.13",
+                    "version": "0.4.14",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-schema-optics_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-optics_2.13/0.4.14/zio-schema-optics_2.13-0.4.14.jar"
+                        },
+                        {
+                            "name": "zio-schema-optics_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-optics_2.13/0.4.14/zio-schema-optics_2.13-0.4.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-schema-derivation_2.13",
+                    "version": "0.4.14",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-schema-derivation_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-derivation_2.13/0.4.14/zio-schema-derivation_2.13-0.4.14.jar"
+                        },
+                        {
+                            "name": "zio-schema-derivation_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-derivation_2.13/0.4.14/zio-schema-derivation_2.13-0.4.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-internal-macros_2.13",
+                    "version": "2.0.13",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-internal-macros_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-internal-macros_2.13/2.0.13/zio-internal-macros_2.13-2.0.13.jar"
+                        },
+                        {
+                            "name": "zio-internal-macros_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-internal-macros_2.13/2.0.13/zio-internal-macros_2.13-2.0.13-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-stacktracer_2.13",
+                    "version": "2.0.13",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-stacktracer_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-stacktracer_2.13/2.0.13/zio-stacktracer_2.13-2.0.13.jar"
+                        },
+                        {
+                            "name": "zio-stacktracer_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-stacktracer_2.13/2.0.13/zio-stacktracer_2.13-2.0.13-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "izumi-reflect_2.13",
+                    "version": "2.3.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "izumi-reflect_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/izumi-reflect_2.13/2.3.1/izumi-reflect_2.13-2.3.1.jar"
+                        },
+                        {
+                            "name": "izumi-reflect_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/izumi-reflect_2.13/2.3.1/izumi-reflect_2.13-2.3.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-schema-macros_2.13",
+                    "version": "0.4.14",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-schema-macros_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-macros_2.13/0.4.14/zio-schema-macros_2.13-0.4.14.jar"
+                        },
+                        {
+                            "name": "zio-schema-macros_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-schema-macros_2.13/0.4.14/zio-schema-macros_2.13-0.4.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-streams_2.13",
+                    "version": "2.0.10",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-streams_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-streams_2.13/2.0.10/zio-streams_2.13-2.0.10.jar"
+                        },
+                        {
+                            "name": "zio-streams_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-streams_2.13/2.0.10/zio-streams_2.13-2.0.10-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-prelude_2.13",
+                    "version": "1.0.0-RC18",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-prelude_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-prelude_2.13/1.0.0-RC18/zio-prelude_2.13-1.0.0-RC18.jar"
+                        },
+                        {
+                            "name": "zio-prelude_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-prelude_2.13/1.0.0-RC18/zio-prelude_2.13-1.0.0-RC18-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-constraintless_2.13",
+                    "version": "0.3.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-constraintless_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-constraintless_2.13/0.3.2/zio-constraintless_2.13-0.3.2.jar"
+                        },
+                        {
+                            "name": "zio-constraintless_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-constraintless_2.13/0.3.2/zio-constraintless_2.13-0.3.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.mongodb",
+                    "name": "bson",
+                    "version": "4.9.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "bson",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/mongodb/bson/4.9.1/bson-4.9.1.jar"
+                        },
+                        {
+                            "name": "bson",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/mongodb/bson/4.9.1/bson-4.9.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-bson_2.13",
+                    "version": "1.0.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-bson_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-bson_2.13/1.0.2/zio-bson_2.13-1.0.2.jar"
+                        },
+                        {
+                            "name": "zio-bson_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-bson_2.13/1.0.2/zio-bson_2.13-1.0.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-collection-compat_2.13",
+                    "version": "2.10.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-collection-compat_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0.jar"
+                        },
+                        {
+                            "name": "scala-collection-compat_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-json_2.13",
+                    "version": "0.5.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-json_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-json_2.13/0.5.0/zio-json_2.13-0.5.0.jar"
+                        },
+                        {
+                            "name": "zio-json_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-json_2.13/0.5.0/zio-json_2.13-0.5.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-optics_2.13",
+                    "version": "0.2.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-optics_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-optics_2.13/0.2.1/zio-optics_2.13-0.2.1.jar"
+                        },
+                        {
+                            "name": "zio-optics_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-optics_2.13/0.2.1/zio-optics_2.13-0.2.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "izumi-reflect-thirdparty-boopickle-shaded_2.13",
+                    "version": "2.3.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "izumi-reflect-thirdparty-boopickle-shaded_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/izumi-reflect-thirdparty-boopickle-shaded_2.13/2.3.1/izumi-reflect-thirdparty-boopickle-shaded_2.13-2.3.1.jar"
+                        },
+                        {
+                            "name": "izumi-reflect-thirdparty-boopickle-shaded_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/izumi-reflect-thirdparty-boopickle-shaded_2.13/2.3.1/izumi-reflect-thirdparty-boopickle-shaded_2.13-2.3.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "dev.zio",
+                    "name": "zio-prelude-macros_2.13",
+                    "version": "1.0.0-RC18",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "zio-prelude-macros_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-prelude-macros_2.13/1.0.0-RC18/zio-prelude-macros_2.13-1.0.0-RC18.jar"
+                        },
+                        {
+                            "name": "zio-prelude-macros_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/dev/zio/zio-prelude-macros_2.13/1.0.0-RC18/zio-prelude-macros_2.13-1.0.0-RC18-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.softwaremill.magnolia1_2",
+                    "name": "magnolia_2.13",
+                    "version": "1.1.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "magnolia_2.13",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/softwaremill/magnolia1_2/magnolia_2.13/1.1.3/magnolia_2.13-1.1.3.jar"
+                        },
+                        {
+                            "name": "magnolia_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/softwaremill/magnolia1_2/magnolia_2.13/1.1.3/magnolia_2.13-1.1.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-reflect",
+                    "version": "2.13.10",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-reflect",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.10/scala-reflect-2.13.10.jar"
+                        },
+                        {
+                            "name": "scala-reflect",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.10/scala-reflect-2.13.10-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.10",
+                    "configurations": "optional",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.10/scala-library-2.13.10.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "/Users/muiruri/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.10/scala-library-2.13.10-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        },
+        "tags": [
+            "library"
+        ]
+    }
+}

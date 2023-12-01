@@ -6,7 +6,7 @@ import zio.{ Chunk, Unsafe, ZIO, ZLayer }
 import scala.collection.immutable.ListMap
 import scala.util.Try
 
-final class QueryParamsParser(queryParams: Map[String, Chunk[String]]) {
+final class Parser(queryParams: Map[String, Chunk[String]]) {
   def decode[A](implicit schema: Schema[A]): Either[String, A] =
     (schema.asInstanceOf[Schema[_]] match {
       case Schema.Optional(schema, annotations)                  =>
@@ -202,12 +202,12 @@ final class QueryParamsParser(queryParams: Map[String, Chunk[String]]) {
       .getOrElse(Left(s"Expected a $expectedType but found $queryParamValue for field $fieldName"))
 }
 
-object QueryParamsParser {
+object Parser {
 
-  def make(queryParams: Map[String, Chunk[String]]): ZLayer[Any, Nothing, QueryParamsParser] =
-    ZLayer(ZIO.succeed(new QueryParamsParser(queryParams)))
+  def make(queryParams: Map[String, Chunk[String]]): ZLayer[Any, Nothing, Parser] =
+    ZLayer(ZIO.succeed(new Parser(queryParams)))
 
-  def decode[A](implicit schema: Schema[A]): ZIO[QueryParamsParser, Nothing, Either[String, A]] =
-    ZIO.serviceWith[QueryParamsParser](_.decode)
+  def decode[A](implicit schema: Schema[A]): ZIO[Parser, Nothing, Either[String, A]] =
+    ZIO.serviceWith[Parser](_.decode)
 
 }
